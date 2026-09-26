@@ -636,13 +636,13 @@ team_members = [
         "Avinash",
         "1SI24EC017",
         "Project Member",
-        "assets/team/avinash.jpg"
+        "assets/team/avinash.jpeg"
     ),
     (
         "Kartik Kumar Singh",
         "1SI24EC053",
         "Project Member",
-        "assets/team/kartik.jpg"
+        "assets/team/kartik.jpeg"
     ),
     (
         "Lakshisha V M",
