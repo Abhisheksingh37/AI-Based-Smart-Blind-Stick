@@ -1,5 +1,5 @@
 import streamlit as st
-
+import base64
 
 # ==========================================================
 # PAGE CONFIGURATION
@@ -271,7 +271,7 @@ html("""
 
     <a href="#home" class="home-icon">⌂</a>
 
-    <a href="#team">TEAM MEMBERS</a>
+    <a href="#team">TEAM</a>
 
     <a href="#reports">WEEKLY REPORTS</a>
 
@@ -394,48 +394,73 @@ html("""
 # ==========================================================
 # PROJECT GUIDES
 # ==========================================================
-
 html("""
-<div class="main-content">
+<div id="team" class="main-content">
 
     <div class="section-title">
         Project Guides
     </div>
 
+    <div style="margin-bottom: 20px;">
+        <a href="#members"
+           style="
+               color: #d60000;
+               text-decoration: none;
+               font-size: 16px;
+           ">
+            ↓ View Team Members
+        </a>
+    </div>
+
 </div>
 """)
-
 
 guides = [
     (
         "Dr. K V Suresh",
         "Professor",
         "Department of ECE, SIT",
-        "assets/team/photomini.jpg.jpg"
+        "assets/team/Dr.-K-V-Suresh.jpg"
     ),
     (
         "Sandesh G V",
         "Founder / Software Developer",
         "Nasken Health, Boston, United States",
-        "assets/team/photomini.jpg.jpg"
+        "assets/team/sandesh_g_v.jpg"
     )
 ]
 
 
-cols = st.columns(2)
+def image_to_base64(path):
+    with open(path, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode()
 
+
+cols = st.columns(2)
 
 for col, (name, designation, organization, photo) in zip(cols, guides):
 
     with col:
 
-        st.image(
-            "assets/team/photomini.jpg",
-            width=190
-        )
+        image_base64 = image_to_base64(photo)
 
         html(f"""
-        <div class="team-card">
+        <div style="
+            text-align: center;
+            padding: 10px 20px 30px 20px;
+        ">
+
+            <img
+                src="data:image/jpeg;base64,{image_base64}"
+                style="
+                    width: 190px;
+                    height: 255px;
+                    object-fit: cover;
+                    display: block;
+                    margin: 0 auto 25px auto;
+                    border-radius: 5px;
+                "
+            >
 
             <div class="team-name-card">
                 {name}
@@ -451,17 +476,25 @@ for col, (name, designation, organization, photo) in zip(cols, guides):
 
         </div>
         """)
-
-
 # ==========================================================
 # PROJECT MEMBERS
 # ==========================================================
-
 html("""
-<div class="main-content">
+<div id="members" class="main-content">
 
     <div class="section-title">
-        Project Members
+        Team Members
+    </div>
+
+    <div style="margin-bottom: 20px;">
+        <a href="#team"
+           style="
+               color: #d60000;
+               text-decoration: none;
+               font-size: 16px;
+           ">
+            ↑ Back to Project Guides
+        </a>
     </div>
 
 </div>
@@ -473,7 +506,7 @@ team_members = [
         "Abhishek Kumar Singh",
         "1SI24EC002",
         "Project Member",
-        "assets/team/photomini.jpg"
+        "assets/team/photo_gtnew.jpg"
     ),
     (
         "Avinash",
@@ -503,13 +536,25 @@ for col, (name, usn, role, photo) in zip(cols, team_members):
 
     with col:
 
-        st.image(
-            photo,
-            width=180
-        )
+        image_base64 = image_to_base64(photo)
 
         html(f"""
-        <div class="team-card">
+        <div style="
+            text-align: center;
+            padding: 10px 10px 30px 10px;
+        ">
+
+            <img
+                src="data:image/jpeg;base64,{image_base64}"
+                style="
+                    width: 180px;
+                    height: 220px;
+                    object-fit: cover;
+                    display: block;
+                    margin: 0 auto 20px auto;
+                    border-radius: 5px;
+                "
+            >
 
             <div class="team-name-card">
                 {name}
@@ -529,7 +574,6 @@ for col, (name, usn, role, photo) in zip(cols, team_members):
 
         </div>
         """)
-
 
 # ==========================================================
 # WEEKLY REPORTS
