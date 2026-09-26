@@ -14,11 +14,19 @@ st.set_page_config(
 
 
 # ==========================================================
-# HELPER FUNCTION
+# HELPER FUNCTIONS
+# (defined once, near the top, and reused everywhere below —
+#  previously image_to_base64 was duplicated inside the guides
+#  section; now it lives here only)
 # ==========================================================
 
 def html(content):
     st.html(content)
+
+
+def image_to_base64(path):
+    with open(path, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode()
 
 
 # ==========================================================
@@ -68,6 +76,7 @@ header {
     font-family: "Lato", Arial, sans-serif;
     font-size: 42px;
     margin-bottom: 3px;
+    line-height: 1.2;
 }
 
 .team-name {
@@ -79,6 +88,7 @@ header {
 .project-name {
     font-size: 23px;
     font-weight: bold;
+    line-height: 1.3;
 }
 
 .header-links {
@@ -105,6 +115,7 @@ header {
     padding: 14px 4%;
     white-space: nowrap;
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .navigation a {
@@ -137,6 +148,7 @@ header {
     font-size: 45px;
     font-weight: 400;
     margin-bottom: 25px;
+    line-height: 1.25;
 }
 
 .section-title {
@@ -157,6 +169,7 @@ header {
     font-size: 18px;
     line-height: 1.65;
     margin-bottom: 20px;
+    word-wrap: break-word;
 }
 
 
@@ -181,13 +194,35 @@ header {
     margin-bottom: 10px;
 }
 
+.team-photo {
+    width: 100%;
+    max-width: 190px;
+    aspect-ratio: 190 / 255;
+    height: auto;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto 20px auto;
+    border-radius: 5px;
+}
+
+.member-photo {
+    width: 100%;
+    max-width: 180px;
+    aspect-ratio: 180 / 220;
+    height: auto;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto 20px auto;
+    border-radius: 5px;
+}
+
 
 /* ==========================================================
    DOCUMENTS
 ========================================================== */
 
 .document-section {
-    padding: 0 3.2%;
+    padding: 0 3.2% 20px 3.2%;
 }
 
 .document-link {
@@ -214,6 +249,7 @@ header {
     margin: 20px 0;
     font-size: 17px;
     line-height: 1.6;
+    word-wrap: break-word;
 }
 
 
@@ -228,6 +264,112 @@ header {
     text-align: center;
     color: #666666;
     font-size: 15px;
+}
+
+
+/* ==========================================================
+   RESPONSIVE / MOBILE
+   Everything above is the desktop layout. These overrides
+   kick in on tablets and phones so nothing overflows,
+   overlaps or gets cut off.
+========================================================== */
+
+@media (max-width: 900px) {
+
+    .top-header {
+        min-height: auto;
+        padding: 16px 5%;
+    }
+
+    .university-name {
+        font-size: 26px;
+    }
+
+    .team-name {
+        font-size: 16px;
+    }
+
+    .project-name {
+        font-size: 16px;
+    }
+
+    /* The absolute-positioned header links used to overlap
+       the title text on narrow screens. On mobile they now
+       drop below the header text instead, and stack. */
+    .header-links {
+        position: static;
+        display: block;
+        margin-top: 12px;
+        text-align: left;
+        font-size: 13px;
+    }
+
+    .header-links span {
+        margin-left: 0;
+        margin-right: 16px;
+        display: inline-block;
+    }
+
+    .navigation {
+        padding: 10px 4%;
+    }
+
+    .navigation a {
+        font-size: 15px;
+        margin-right: 20px;
+    }
+
+    .main-content {
+        padding: 24px 5%;
+    }
+
+    .main-title {
+        font-size: 26px;
+    }
+
+    .section-title {
+        font-size: 22px;
+    }
+
+    .sub-title {
+        font-size: 19px;
+    }
+
+    .paragraph {
+        font-size: 16px;
+    }
+
+    .team-name-card {
+        font-size: 17px;
+    }
+
+    .team-role {
+        font-size: 14px;
+    }
+
+    .document-link {
+        font-size: 17px;
+    }
+
+    .info-box {
+        font-size: 15px;
+        padding: 14px 16px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .university-name {
+        font-size: 21px;
+    }
+
+    .main-title {
+        font-size: 22px;
+    }
+
+    .section-title {
+        font-size: 20px;
+    }
 }
 
 </style>
@@ -288,12 +430,7 @@ html("""
 
 
 # ==========================================================
-# HOME
-# ==========================================================
-
-
-# ==========================================================
-# TEAM MEMBERS
+# HOME / PROJECT OVERVIEW
 # ==========================================================
 
 html("""
@@ -316,13 +453,13 @@ html("""
 
         Visually impaired individuals often face difficulties
         while moving independently in unfamiliar indoor and
-        outdoor environments.A conventional white cane is an important mobility aid
+        outdoor environments. A conventional white cane is an important mobility aid
         that helps users detect obstacles through physical
         contact. However, it provides limited information about
         the type, location and distance of objects in the
         surrounding environment. To address these limitations, this project proposes an
         Edge Vision Assistive Guidance Cane for the Visually
-        Impaired.The proposed system integrates a camera, distance
+        Impaired. The proposed system integrates a camera, distance
         sensor, Raspberry Pi 5, computer vision, object
         detection and audio/vibration feedback into a portable
         walking cane. The Raspberry Pi 5 performs image processing and object
@@ -334,7 +471,6 @@ html("""
 
 </div>
 """)
-
 
 
 html("""
@@ -391,9 +527,11 @@ html("""
 </div>
 """)
 
+
 # ==========================================================
-# PROJECT GUIDES
+# PROJECT GUIDES  (TEAM anchor target)
 # ==========================================================
+
 html("""
 <div id="team" class="main-content">
 
@@ -430,12 +568,6 @@ guides = [
     )
 ]
 
-
-def image_to_base64(path):
-    with open(path, "rb") as image_file:
-        return base64.b64encode(image_file.read()).decode()
-
-
 cols = st.columns(2)
 
 for col, (name, designation, organization, photo) in zip(cols, guides):
@@ -445,21 +577,11 @@ for col, (name, designation, organization, photo) in zip(cols, guides):
         image_base64 = image_to_base64(photo)
 
         html(f"""
-        <div style="
-            text-align: center;
-            padding: 10px 20px 30px 20px;
-        ">
+        <div style="text-align: center; padding: 10px 20px 30px 20px;">
 
             <img
                 src="data:image/jpeg;base64,{image_base64}"
-                style="
-                    width: 190px;
-                    height: 255px;
-                    object-fit: cover;
-                    display: block;
-                    margin: 0 auto 25px auto;
-                    border-radius: 5px;
-                "
+                class="team-photo"
             >
 
             <div class="team-name-card">
@@ -476,9 +598,12 @@ for col, (name, designation, organization, photo) in zip(cols, guides):
 
         </div>
         """)
+
+
 # ==========================================================
-# PROJECT MEMBERS
+# TEAM MEMBERS
 # ==========================================================
+
 html("""
 <div id="members" class="main-content">
 
@@ -499,7 +624,6 @@ html("""
 
 </div>
 """)
-
 
 team_members = [
     (
@@ -528,9 +652,7 @@ team_members = [
     )
 ]
 
-
 cols = st.columns(4)
-
 
 for col, (name, usn, role, photo) in zip(cols, team_members):
 
@@ -539,21 +661,11 @@ for col, (name, usn, role, photo) in zip(cols, team_members):
         image_base64 = image_to_base64(photo)
 
         html(f"""
-        <div style="
-            text-align: center;
-            padding: 10px 10px 30px 10px;
-        ">
+        <div style="text-align: center; padding: 10px 10px 30px 10px;">
 
             <img
                 src="data:image/jpeg;base64,{image_base64}"
-                style="
-                    width: 180px;
-                    height: 220px;
-                    object-fit: cover;
-                    display: block;
-                    margin: 0 auto 20px auto;
-                    border-radius: 5px;
-                "
+                class="member-photo"
             >
 
             <div class="team-name-card">
@@ -574,6 +686,7 @@ for col, (name, usn, role, photo) in zip(cols, team_members):
 
         </div>
         """)
+
 
 # ==========================================================
 # WEEKLY REPORTS
@@ -796,7 +909,7 @@ html("""
         <br>
 
         <b>Domain:</b>
-        AI/ML/DL,Embedded Systems, IoT
+        AI/ML/DL, Embedded Systems, IoT
 
     </div>
 
